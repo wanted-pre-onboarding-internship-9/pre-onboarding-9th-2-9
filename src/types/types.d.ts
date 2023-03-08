@@ -8,3 +8,7 @@ interface IProduct {
 	maximumPurchases: number;
 	registrationDate: string;
 }
+
+interface IProductProps extends IProduct {
+	isView: boolean;
+}

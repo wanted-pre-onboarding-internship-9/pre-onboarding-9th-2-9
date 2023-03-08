@@ -22,11 +22,12 @@ function Product({
 	description,
 	maximumPurchases,
 	registrationDate,
-}: IProduct) {
+	isView,
+}: IProductProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	return (
 		<>
-			<Box onClick={() => onOpen()}>
+			<Box onClick={() => onOpen()} cursor="pointer" hidden={!isView}>
 				<Box>{idx}</Box>
 				<Box>{name}</Box>
 				<Box>
@@ -63,4 +64,4 @@ function Product({
 	);
 }
 
-export default Product;
+export default React.memo(Product);

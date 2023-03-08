@@ -1,5 +1,5 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 function Layout({ children }: { children: JSX.Element | JSX.Element[] }) {
 	return (
