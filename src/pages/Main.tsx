@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import {
 	Card,
@@ -21,7 +21,7 @@ import {
 	Select,
 } from '@chakra-ui/react';
 
-export interface DataList {
+type DataList = {
 	idx: number;
 	name: string;
 	mainImage: string;
@@ -30,14 +30,17 @@ export interface DataList {
 	price: number;
 	maximumPurchases: number;
 	registrationDate: string;
-}
+};
+
+type FilterType = {
+	price: string;
+	region: string;
+};
 
 function Main() {
 	const [data, setData] = useState<DataList[]>();
 	const [modalIdx, setModalIdx] = useState<number>();
-	const [priceFilter, setPriceFilter] = useState<string | null>();
-	const [regionFilter, setRegionFilter] = useState<string | null>();
-
+	const [filter, setFilter] = useState<FilterType>({ region: '', price: '' });
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const getData = () => {
@@ -48,48 +51,39 @@ function Main() {
 
 	useEffect(() => {
 		getData();
-	}, [regionFilter, priceFilter]);
+	}, [filter]);
 
 	const addToCart = (travelInfo: DataList) => {
 		localStorage.setItem('addToCart', JSON.stringify(travelInfo));
 	};
 
-	const onChangePrice = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setPriceFilter(e.target.value);
+	const onChangeFilter = (e: React.ChangeEvent<HTMLSelectElement>, key: keyof FilterType) => {
+		setFilter({ ...filter, [key]: e.target.value });
 	};
 
-	const onChangeRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setRegionFilter(e.target.value);
-	};
-
-	const filterData = () => {
-		if (regionFilter) {
-			setData(data?.filter((ele) => ele.spaceCategory === regionFilter));
-		} else if (priceFilter) {
-			setData(data?.filter((ele) => ele.price.toString() === priceFilter));
-		} else {
-			setData(data?.filter((ele) => ele.spaceCategory === regionFilter && ele.price.toString() === priceFilter));
-		}
-	};
+	const filterData = useCallback(() => {
+		if (!data) return;
+		setData(data?.filter((ele) => ele.price.toString() === filter?.price || ele.spaceCategory === filter.region));
+	}, [data, filter]);
 
 	return (
 		<>
 			<Stack>
-				<Select placeholder="price" size="md" onChange={onChangePrice}>
+				<Select placeholder="price" size="md" onChange={(e) => onChangeFilter(e, 'price')}>
 					<option value="1000"> 1000</option>
 					<option value="10000"> 10000</option>
 					<option value="15000"> 15000</option>
 					<option value="25000"> 25000</option>
 					<option value="30000"> 30000</option>
 				</Select>
-				<Select placeholder="region" onChange={onChangeRegion}>
+				<Select placeholder="region" onChange={(e) => onChangeFilter(e, 'region')}>
 					<option value="강원">강원</option>
 					<option value="대구">대구</option>
 					<option value="부산">부산</option>
 					<option value="서울">서울</option>
 					<option value="제주">제주</option>
 				</Select>
-				<Button onClick={() => filterData()}>검색</Button>
+				<Button onClick={filterData}>검색</Button>
 			</Stack>
 			<Wrap spacing="24px">
 				{data?.map((mock: DataList) => (
