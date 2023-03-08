@@ -26,6 +26,10 @@ function Main() {
 		getData();
 	}, []);
 
+	const addToCart = (travelInfo: DataList) => {
+		localStorage.setItem('addToCart', JSON.stringify(travelInfo));
+	};
+
 	return (
 		<Wrap spacing="24px">
 			{data?.map((mock: DataList) => (
@@ -43,7 +47,7 @@ function Main() {
 						</Stack>
 					</CardBody>
 					<CardFooter>
-						<Button>예약</Button>
+						<Button onClick={() => addToCart(mock)}>예약</Button>
 					</CardFooter>
 				</Card>
 			))}
