@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-const instance = axios.create({
-	baseURL: process.env.REACT_APP_BASE_URL,
-	headers: {
-		'Content-Type': 'application/json',
-	},
+export const instance = axios.create({
+	baseURL: '/dummy',
 });
 
-export default instance;
+export const DataAPI = {
+	getData: () => instance.get(`/mock_data.json`),
+};

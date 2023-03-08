@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	Card,
 	CardBody,
@@ -20,6 +19,7 @@ import {
 	ModalFooter,
 	Select,
 } from '@chakra-ui/react';
+import { DataAPI } from '../apis/instance';
 
 type DataList = {
 	idx: number;
@@ -44,7 +44,7 @@ function Main() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const getData = () => {
-		axios.get('/dummy/mock_data.json').then((res) => {
+		DataAPI.getData().then((res) => {
 			setData(res.data);
 		});
 	};
@@ -85,20 +85,19 @@ function Main() {
 				</Select>
 				<Button onClick={filterData}>검색</Button>
 			</Stack>
-			<Wrap spacing="24px">
+			<Wrap spacing="24px" justify="center">
 				{data?.map((mock: DataList) => (
 					<>
 						<Card key={mock.idx}>
 							<CardBody>
 								<Image src={mock.mainImage} boxSize="300px" borderRadius="lg" />
 								<Stack mt="6" spacing="2">
-									<Heading size="md">
-										{mock.idx} {mock.name}
-									</Heading>
+									<Heading size="md">{mock.name}</Heading>
 									<Text>{mock.spaceCategory}</Text>
 									<Text color="blue.600" fontSize="2xl">
 										₩{mock.price}
 									</Text>
+									<Text>상품코드: {mock.idx}</Text>
 								</Stack>
 							</CardBody>
 							<CardFooter>
@@ -119,9 +118,7 @@ function Main() {
 							<Modal isCentered isOpen={isOpen} onClose={onClose}>
 								<ModalOverlay />
 								<ModalContent>
-									<ModalHeader>
-										{mock.idx} {mock.name}
-									</ModalHeader>
+									<ModalHeader>{mock.name}</ModalHeader>
 									<ModalCloseButton />
 									<ModalBody>
 										<Image src={mock.mainImage} boxSize="300px" borderRadius="lg" />
@@ -130,6 +127,7 @@ function Main() {
 										<Text>{mock.price}</Text>
 										<Text>{mock.maximumPurchases}</Text>
 										<Text>{mock.registrationDate}</Text>
+										<Text>상품코드: {mock.idx}</Text>
 									</ModalBody>
 									<ModalFooter>
 										<Button onClick={onClose}>Close</Button>
