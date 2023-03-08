@@ -1,39 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import travelProductsApis from '../apis/travelProducts';
+import { ITravelProduct, IPrice, ISpace, IFilter } from '../dto/productDTO';
+import TravelCard from '../commons/TravelCard';
 
 function Main() {
-	interface ITravelProducts {
-		idx: number,
-		name: string,
-		mainImage: string,
-		description: string,
-		spaceCategory: string,
-		price: number,
-		maximumPurchases: number,
-		registrationDate: string
-	}
 
-	const [travelProducts, setTravelProducts] = useState<ITravelProducts[]>([]);
-
-	const getTravelProductsApis = async () => {
+	const getTravelProducts = async () => {
 		const result = await travelProductsApis.getTravelProductsAX();
-		if (result.status === 200) setTravelProducts(result.data);
-	}
+		return result.data;
+	};
+
+	const response = useQuery(["getTravelProducts"], getTravelProducts);
 
 	useEffect(() => {
-		getTravelProductsApis();
-	}, [])
+		console.log(response);
 
-	interface IPrice {
-		key: number,
-		startPrice: number,
-		endPrice: number
-	}
-
-	interface ISpace {
-		key: number,
-		space: string
-	}
+	}, [response])
 
 	const priceArr: IPrice[] = [
 		{ key: 1, startPrice: 0, endPrice: 5000 },
@@ -41,8 +24,8 @@ function Main() {
 		{ key: 3, startPrice: 10000, endPrice: 15000 },
 		{ key: 4, startPrice: 15000, endPrice: 20000 },
 		{ key: 5, startPrice: 20000, endPrice: 25000 },
-		{ key: 6, startPrice: 25000, endPrice: 30000 }
-	]
+		{ key: 6, startPrice: 25000, endPrice: 30000 },
+	];
 
 	const spaceArr: ISpace[] = [
 		{ key: 1, space: '서울' },
@@ -61,35 +44,69 @@ function Main() {
 		{ key: 14, space: '전남' },
 		{ key: 15, space: '경북' },
 		{ key: 16, space: '경남' },
-		{ key: 17, space: '제주' }
-	]
+		{ key: 17, space: '제주' },
+	];
+
+	const [filter, setFilter] = useState<IFilter>({
+		price: -1,
+		space: ""
+	});
+
+	const filterHandle = (name: string, value: number | string) => {
+		setFilter({ ...filter, [name]: value });
+	}
 
 	return (
 		<div>
 			<div>
-				가격 : <select name="price" onChange={(e) => alert(e.target.value)}>
-					<option value="">전체</option>
-					{priceArr.map(price => (
-						<option value={price.endPrice} key={price.key} >{price.startPrice}~{price.endPrice}</option>
+				가격 :
+				<select name="price" onChange={event => filterHandle(event.target.name, Number(event.target.value))}>
+					<option value="-1">전체</option>
+					{priceArr.map((price) => (
+						<option value={price.endPrice} key={price.key}>
+							{price.startPrice}~{price.endPrice}
+						</option>
 					))}
 				</select>
-				지역 : <select name="space">
+				지역 :
+				<select name="space" onChange={event => filterHandle(event.target.name, event.target.value)}>
 					<option value="">전체</option>
-					{spaceArr.map(space => (
-						<option value={space.space} key={space.key}>{space.space}</option>
+					{spaceArr.map((space) => (
+						<option value={space.space} key={space.key}>
+							{space.space}
+						</option>
 					))}
 				</select>
 			</div>
 			<div>
-				{travelProducts.map(product => (
-					<div key={product.idx}>
-						<div>idx : {product.idx}</div>
-						<div>name : {product.name}</div>
-						<img src={product.mainImage} alt={`product_main_image_${product.idx}`} />
-						<div>price : {product.price}</div>
-						<div>spaceCategory : {product.spaceCategory}</div>
-					</div>
-				))}
+				{filter.price === -1 && filter.space === "" &&
+					response.data?.map((product: ITravelProduct) => (
+						<TravelCard key={product.idx} product={product} />
+					))
+				}
+				{
+					filter.price !== -1 && filter.space === "" &&
+					response.data?.filter((item: ITravelProduct) => item.price >= filter.price - 5000 && item.price <= filter.price)
+						.map((product: ITravelProduct) => (
+							<TravelCard key={product.idx} product={product} />
+						))
+				}
+				{
+					filter.price === -1 && filter.space !== "" &&
+					response.data?.filter((item: ITravelProduct) => item.spaceCategory === filter.space)
+						.map((product: ITravelProduct) => (
+							<TravelCard key={product.idx} product={product} />
+						))
+				}
+
+				{
+					filter.price !== -1 && filter.space !== "" &&
+					response.data?.filter((item: ITravelProduct) => item.price >= filter.price - 5000 && item.price <= filter.price)
+						.filter((item: ITravelProduct) => item.spaceCategory === filter.space)
+						.map((product: ITravelProduct) => (
+							<TravelCard key={product.idx} product={product} />
+						))
+				}
 			</div>
 		</div>
 	);

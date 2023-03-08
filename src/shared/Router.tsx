@@ -11,11 +11,11 @@ const router = createBrowserRouter(
 			<Route
 				path="reservations"
 				element={<Reservations />}
-			// loader={async () => {
-			// 	const isToken = isCheckAuth();
-			// 	if (isToken) throw redirect('/todo');
-			// 	return { isToken };
-			//   }}
+				// loader={async () => {
+				// 	const isToken = isCheckAuth();
+				// 	if (isToken) throw redirect('/todo');
+				// 	return { isToken };
+				//   }}
 			/>
 		</Route>
 	)
