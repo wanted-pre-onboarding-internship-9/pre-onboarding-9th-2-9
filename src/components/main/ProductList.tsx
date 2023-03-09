@@ -5,7 +5,6 @@ import { SimpleGrid } from '@chakra-ui/react';
 import ProductItem from './ProductItem';
 
 interface Product {
-	id: number;
 	idx: number;
 	name: string;
 	mainImage: string;

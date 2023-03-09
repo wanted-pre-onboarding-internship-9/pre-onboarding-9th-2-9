@@ -20,7 +20,6 @@ import {
 } from '@chakra-ui/react';
 
 interface Product {
-	id: number;
 	idx: number;
 	name: string;
 	mainImage: string;
@@ -40,9 +39,17 @@ function ProductItem({ product }: Props) {
 
 	const handleReservation = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation();
-		const reservationList = JSON.parse(localStorage.getItem('reservationList') || '[]');
-		reservationList.push(product);
-		localStorage.setItem('reservationList', JSON.stringify(reservationList));
+
+		const reservationListJson = JSON.parse(localStorage.getItem('reservationList') || '[]');
+		const existIndex = reservationListJson.findIndex((existItem: Product) => existItem.idx === product.idx);
+
+		if (existIndex === -1) {
+			reservationListJson.push({ ...product, count: 1 });
+		} else {
+			reservationListJson[existIndex].count += 1;
+		}
+
+		localStorage.setItem('reservationList', JSON.stringify(reservationListJson));
 		alert('장바구니에 상품을 담았습니다.');
 	};
 
