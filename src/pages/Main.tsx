@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import Layout from '../components/Layout';
-import ProductsList from '../components/ProductsList';
+import { useEffect } from 'react';
+import ProductsList from '../components/main/ProductsList';
 
 function Main() {
 	useEffect(() => {
@@ -8,11 +7,6 @@ function Main() {
 		if (!storage) localStorage.setItem('reservations', JSON.stringify([]));
 	}, []);
 
-	return (
-		<Layout>
-			<ProductsList />
-		</Layout>
-	);
+	return <ProductsList />;
 }
-
 export default Main;

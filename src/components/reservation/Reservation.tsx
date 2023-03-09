@@ -1,7 +1,6 @@
-import React from 'react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, IconButton, Image } from '@chakra-ui/react';
-import { convertUnitToWon } from '../commons/utils';
+import { convertUnitToWon } from '../../commons/utils';
 
 function Reservation({
 	idx,

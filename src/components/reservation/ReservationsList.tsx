@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { convertUnitToWon } from '../commons/utils';
+import { convertUnitToWon } from '../../commons/utils';
 import Reservation from './Reservation';
 
 function ReservationsList() {
