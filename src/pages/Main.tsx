@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import travelProductsApis from '../apis/travelProducts';
-import { ITravelProduct, IPrice, ISpace, IFilter } from '../dto/productDTO';
-import TravelCard from '../commons/TravelCard';
+import { ITravelProduct, IPrice, ISpace, IFilter, TCartInfo } from '../dto/productDTO';
+import TravelCard from '../components/TravelCard';
 
 function Main() {
-
 	const getTravelProducts = async () => {
 		const result = await travelProductsApis.getTravelProductsAX();
 		return result.data;
 	};
 
-	const response = useQuery(["getTravelProducts"], getTravelProducts);
-
-	useEffect(() => {
-		console.log(response);
-
-	}, [response])
+	const response = useQuery(['getTravelProducts'], getTravelProducts);
 
 	const priceArr: IPrice[] = [
 		{ key: 1, startPrice: 0, endPrice: 5000 },
@@ -49,18 +43,30 @@ function Main() {
 
 	const [filter, setFilter] = useState<IFilter>({
 		price: -1,
-		space: ""
+		space: '',
 	});
 
 	const filterHandle = (name: string, value: number | string) => {
 		setFilter({ ...filter, [name]: value });
-	}
+	};
+
+	useEffect(() => {
+		if (!localStorage.getItem('cartInfo')) {
+			const products: ITravelProduct[] = response.data;
+			if (products !== undefined) {
+				const initCart: TCartInfo[] = products.map((item: ITravelProduct | TCartInfo) =>
+					({ ...item, count: 0 })
+				)
+				localStorage.setItem('cartInfo', JSON.stringify(initCart));
+			}
+		}
+	}, [response.data])
 
 	return (
 		<div>
 			<div>
 				가격 :
-				<select name="price" onChange={event => filterHandle(event.target.name, Number(event.target.value))}>
+				<select name="price" onChange={(event) => filterHandle(event.target.name, Number(event.target.value))}>
 					<option value="-1">전체</option>
 					{priceArr.map((price) => (
 						<option value={price.endPrice} key={price.key}>
@@ -69,7 +75,7 @@ function Main() {
 					))}
 				</select>
 				지역 :
-				<select name="space" onChange={event => filterHandle(event.target.name, event.target.value)}>
+				<select name="space" onChange={(event) => filterHandle(event.target.name, event.target.value)}>
 					<option value="">전체</option>
 					{spaceArr.map((space) => (
 						<option value={space.space} key={space.key}>
@@ -79,34 +85,25 @@ function Main() {
 				</select>
 			</div>
 			<div>
-				{filter.price === -1 && filter.space === "" &&
-					response.data?.map((product: ITravelProduct) => (
-						<TravelCard key={product.idx} product={product} />
-					))
-				}
-				{
-					filter.price !== -1 && filter.space === "" &&
-					response.data?.filter((item: ITravelProduct) => item.price >= filter.price - 5000 && item.price <= filter.price)
-						.map((product: ITravelProduct) => (
-							<TravelCard key={product.idx} product={product} />
-						))
-				}
-				{
-					filter.price === -1 && filter.space !== "" &&
-					response.data?.filter((item: ITravelProduct) => item.spaceCategory === filter.space)
-						.map((product: ITravelProduct) => (
-							<TravelCard key={product.idx} product={product} />
-						))
-				}
-
-				{
-					filter.price !== -1 && filter.space !== "" &&
-					response.data?.filter((item: ITravelProduct) => item.price >= filter.price - 5000 && item.price <= filter.price)
+				{filter.price === -1 &&
+					filter.space === '' &&
+					response.data?.map((product: ITravelProduct) => <TravelCard key={product.idx} product={product} />)}
+				{filter.price !== -1 &&
+					filter.space === '' &&
+					response.data
+						?.filter((item: ITravelProduct) => item.price >= filter.price - 5000 && item.price <= filter.price)
+						.map((product: ITravelProduct) => <TravelCard key={product.idx} product={product} />)}
+				{filter.price === -1 &&
+					filter.space !== '' &&
+					response.data
+						?.filter((item: ITravelProduct) => item.spaceCategory === filter.space)
+						.map((product: ITravelProduct) => <TravelCard key={product.idx} product={product} />)}
+				{filter.price !== -1 &&
+					filter.space !== '' &&
+					response.data
+						?.filter((item: ITravelProduct) => item.price >= filter.price - 5000 && item.price <= filter.price)
 						.filter((item: ITravelProduct) => item.spaceCategory === filter.space)
-						.map((product: ITravelProduct) => (
-							<TravelCard key={product.idx} product={product} />
-						))
-				}
+						.map((product: ITravelProduct) => <TravelCard key={product.idx} product={product} />)}
 			</div>
 		</div>
 	);
