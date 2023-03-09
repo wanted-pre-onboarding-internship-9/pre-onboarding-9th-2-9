@@ -25,6 +25,19 @@ function Product({
 	isView,
 }: IProductProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const onReservation = (product: IProduct) => {
+		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
+
+		if (reservations.map((reservation: IReservation) => reservation.idx).includes(product.idx)) {
+			reservations = reservations.map((reservation: IReservation) =>
+				reservation.idx === product.idx ? { ...reservation, count: reservation.count + 1 } : reservation
+			);
+		} else {
+			reservations = [...reservations, { ...product, count: 1 }];
+		}
+		localStorage.setItem('reservations', JSON.stringify(reservations));
+	};
+
 	return (
 		<>
 			<Box onClick={() => onOpen()} cursor="pointer" hidden={!isView}>
@@ -35,6 +48,24 @@ function Product({
 				</Box>
 				<Box>{price}</Box>
 				<Box>{spaceCategory}</Box>
+				<Button
+					bgColor="blue.400"
+					color="white"
+					onClick={() =>
+						onReservation({
+							idx,
+							name,
+							mainImage,
+							price,
+							spaceCategory,
+							description,
+							maximumPurchases,
+							registrationDate,
+						})
+					}
+				>
+					예약하기
+				</Button>
 			</Box>
 			{isOpen ? (
 				<Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
