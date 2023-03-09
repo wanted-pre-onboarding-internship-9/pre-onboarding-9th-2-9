@@ -11,7 +11,18 @@ import {
 	ModalOverlay,
 	Modal,
 	useDisclosure,
+	Flex,
+	GridItem,
 } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import { convertUnitToWon } from '../commons/utils';
+
+const StyledImage = styled(Image)`
+	transition: 0.2s ease-in-out;
+	&:hover {
+		transform: scale(1.05);
+	}
+`;
 
 function Product({
 	idx,
@@ -40,48 +51,94 @@ function Product({
 
 	return (
 		<>
-			<Box onClick={() => onOpen()} cursor="pointer" hidden={!isView}>
-				<Box>{idx}</Box>
-				<Box>{name}</Box>
-				<Box>
-					<Image src={mainImage} alt={name} />
-				</Box>
-				<Box>{price}</Box>
-				<Box>{spaceCategory}</Box>
-				<Button
-					bgColor="blue.400"
-					color="white"
-					onClick={() =>
-						onReservation({
-							idx,
-							name,
-							mainImage,
-							price,
-							spaceCategory,
-							description,
-							maximumPurchases,
-							registrationDate,
-						})
-					}
-				>
-					예약하기
-				</Button>
-			</Box>
+			<GridItem
+				hidden={!isView}
+				boxShadow="2xl"
+				borderRadius="lg"
+				overflow="hidden"
+				gap="2"
+				paddingBottom="4"
+				width="100%"
+			>
+				<Flex direction="column" justifyContent="space-between" height="100%">
+					<Box overflow="hidden">
+						<StyledImage src={mainImage} alt={name} width="full" transition="ease-in-out" objectFit="cover" />
+					</Box>
+					<Box padding="5">
+						<Box fontWeight="bold">{spaceCategory}</Box>
+						<Box fontWeight="bold" fontSize="lg" letterSpacing="tighter">
+							{name}
+						</Box>
+						<Box fontSize="sm" color="gray.600" letterSpacing="tighter">{`상품번호 : ${idx}`}</Box>
+						<Box fontWeight="bold" fontSize="2xl" letterSpacing="tight" marginY="2">
+							{convertUnitToWon(price)}
+						</Box>
+					</Box>
+					<Flex paddingX="3" justifyContent="space-between" marginTop="auto">
+						<Button
+							bgColor="blue.400"
+							_hover={{ bg: 'blue.300' }}
+							color="white"
+							onClick={() =>
+								onReservation({
+									idx,
+									name,
+									mainImage,
+									price,
+									spaceCategory,
+									description,
+									maximumPurchases,
+									registrationDate,
+								})
+							}
+						>
+							예약하기
+						</Button>
+						<Button bgColor="blue.400" _hover={{ bg: 'blue.300' }} color="white" onClick={() => onOpen()}>
+							상세보기
+						</Button>
+					</Flex>
+				</Flex>
+			</GridItem>
 			{isOpen ? (
 				<Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
 					<ModalOverlay />
 					<ModalContent>
-						<ModalHeader>{`${idx}. ${name}`}</ModalHeader>
+						<ModalHeader>{name}</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody>
-							<Box>
-								<Image src={mainImage} alt={name} />
-							</Box>
-							<Box>{description}</Box>
-							<Box>{spaceCategory}</Box>
-							<Box>{price}</Box>
-							<Box>{maximumPurchases}</Box>
-							<Box>{registrationDate}</Box>
+							<Flex direction="column">
+								<Box overflow="hidden" margin="auto">
+									<StyledImage
+										src={mainImage}
+										alt={name}
+										width="full"
+										transition="ease-in-out"
+										objectFit="cover"
+										w="300px"
+										h="300px"
+									/>
+								</Box>
+								<Box padding="5">
+									<Box fontWeight="bold">{spaceCategory}</Box>
+									<Box fontWeight="bold" fontSize="lg" letterSpacing="tighter">
+										{name}
+									</Box>
+									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">{`상품번호 : ${idx}`}</Box>
+									<Box fontWeight="bold" fontSize="2xl" letterSpacing="tight" marginY="2">
+										{convertUnitToWon(price)}
+									</Box>
+									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
+										{description}
+									</Box>
+									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
+										{`구매가능 갯수 ${maximumPurchases}`}
+									</Box>
+									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
+										{`등록기간 ${registrationDate}`}
+									</Box>
+								</Box>
+							</Flex>
 						</ModalBody>
 						<ModalFooter>
 							<Button colorScheme="blue" mr={3} onClick={onClose}>
