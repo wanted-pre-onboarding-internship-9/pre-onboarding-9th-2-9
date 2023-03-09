@@ -14,6 +14,7 @@ import {
 	GridItem,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import { convertUnitToWon } from '../../commons/utils';
 
 const StyledImage = styled(Image)`
@@ -26,10 +27,18 @@ const StyledImage = styled(Image)`
 function Product(props: IProductProps) {
 	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate, isView } = props;
 
+	const navigate = useNavigate();
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleReservation = (product: IProduct) => {
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
+
+		const index = reservations.findIndex((reservation: IReservation) => reservation.idx === product.idx);
+		if (index !== -1 && reservations[index].count >= product.maximumPurchases) {
+			window.alert('구매 가능 횟수가 초과하였습니다.');
+			return;
+		}
 
 		if (reservations.map((reservation: IReservation) => reservation.idx).includes(product.idx)) {
 			reservations = reservations.map((reservation: IReservation) =>
@@ -40,7 +49,9 @@ function Product(props: IProductProps) {
 		}
 		localStorage.setItem('reservations', JSON.stringify(reservations));
 
-		window.alert('예약되었습니다.');
+		if (window.confirm('예약이 확정되었습니다. 장바구니로 이동하시겠습니까?')) {
+			navigate('/reservations');
+		}
 	};
 
 	return (

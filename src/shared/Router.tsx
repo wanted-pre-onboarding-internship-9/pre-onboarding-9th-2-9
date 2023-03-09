@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router-dom';
 import App from '../App';
 import Main from '../pages/Main';
