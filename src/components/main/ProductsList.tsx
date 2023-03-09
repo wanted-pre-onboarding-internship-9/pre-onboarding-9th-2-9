@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import {
 	Box,
+	Checkbox,
 	Flex,
 	Grid,
 	RangeSlider,
 	RangeSliderFilledTrack,
 	RangeSliderThumb,
 	RangeSliderTrack,
-	Select,
 } from '@chakra-ui/react';
 import { convertUnitToWon } from '../../commons/utils';
 import useGetProducts from '../../hooks/useGetProducts';
@@ -16,15 +16,23 @@ import Product from './Product';
 function ProductsList() {
 	const { data } = useGetProducts();
 	const [priceRange, setPriceRange] = useState<number[]>([0, 30000]);
-	const [selectedRegion, setSelectedRegion] = useState<string>('');
+	const [selectedRegion, setSelectedRegion] = useState<string[]>([]);
 	const regions: string[] = data?.data.map((product: IProduct) => product.spaceCategory);
 	const dedupRegions: string[] = regions?.filter((element, index) => regions.indexOf(element) === index);
+
+	const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (!event.target.checked) {
+			setSelectedRegion((props: string[]) => props.filter((region) => region !== event.target.value));
+		} else {
+			setSelectedRegion((props) => [...props, event.target.value]);
+		}
+	};
 
 	return (
 		<Box width="80%" marginX="auto">
 			<Box width="full">
-				<Flex gap="10">
-					<Flex width="full" gap="5" alignItems="center" justifyContent="space-around">
+				<Flex gap="10" direction="column" marginTop="5">
+					<Flex maxWidth="lg" gap="5" alignItems="center" justifyContent="space-around">
 						<Box whiteSpace="nowrap" letterSpacing="tighter" fontSize="lg" fontWeight="bold">
 							가격대별
 						</Box>
@@ -74,22 +82,17 @@ function ProductsList() {
 							</RangeSliderThumb>
 						</RangeSlider>
 					</Flex>
-					<Flex width="full" maxWidth="lg" gap="5" alignItems="center" whiteSpace="nowrap">
+					<Flex maxWidth="lg" gap="5" alignItems="center" whiteSpace="nowrap">
 						<Box letterSpacing="tighter" fontSize="lg" fontWeight="bold">
 							지역별
 						</Box>
-						<Select
-							placeholder="전체"
-							value={selectedRegion}
-							onChange={(event) => setSelectedRegion(event.target.value)}
-						>
-							{data &&
-								dedupRegions.map((region) => (
-									<option key={region} value={region}>
-										{region}
-									</option>
-								))}
-						</Select>
+
+						{data &&
+							dedupRegions.map((region) => (
+								<Checkbox key={region} value={region} onChange={(e) => handleCheck(e)}>
+									{region}
+								</Checkbox>
+							))}
 					</Flex>
 				</Flex>
 			</Box>
@@ -110,7 +113,7 @@ function ProductsList() {
 						maximumPurchases={product.maximumPurchases}
 						registrationDate={product.registrationDate}
 						isView={
-							(product.spaceCategory === selectedRegion || selectedRegion === '') &&
+							(selectedRegion.includes(product.spaceCategory) || selectedRegion.length === 0) &&
 							priceRange[0] <= product.price &&
 							product.price <= priceRange[1]
 						}
