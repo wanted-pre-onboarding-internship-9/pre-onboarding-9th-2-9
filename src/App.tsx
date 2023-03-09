@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Outlet } from 'react-router-dom';
 
 function App() {
 	return (
-		<div className="App">
-			<Box bg="tomato">hello</Box>
-		</div>
+		<ChakraProvider>
+			<Outlet />
+		</ChakraProvider>
 	);
 }
 

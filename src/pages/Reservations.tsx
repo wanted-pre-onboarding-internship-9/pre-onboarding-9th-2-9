@@ -1,7 +1,19 @@
 import React from 'react';
+import { Flex, Heading } from '@chakra-ui/react';
+import Layout from '../components/Layout';
+import ReservationsList from '../components/ReservationsList';
 
 function Reservations() {
-	return <div>Reservations</div>;
+	return (
+		<Layout>
+			<Flex direction="column">
+				<Heading fontWeight="bold" fontSize="2xl" borderBottom="4px" paddingBottom="2" width="80%" margin="auto">
+					예약내역
+				</Heading>
+				<ReservationsList />
+			</Flex>
+		</Layout>
+	);
 }
 
 export default Reservations;
