@@ -14,7 +14,7 @@ import {
 	GridItem,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { convertUnitToWon } from '../commons/utils';
+import { convertUnitToWon } from '../../commons/utils';
 
 const StyledImage = styled(Image)`
 	transition: 0.2s ease-in-out;
@@ -23,19 +23,12 @@ const StyledImage = styled(Image)`
 	}
 `;
 
-function Product({
-	idx,
-	name,
-	mainImage,
-	price,
-	spaceCategory,
-	description,
-	maximumPurchases,
-	registrationDate,
-	isView,
-}: IProductProps) {
+function Product(props: IProductProps) {
+	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate, isView } = props;
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const onReservation = (product: IProduct) => {
+
+	const handleReservation = (product: IProduct) => {
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
 
 		if (reservations.map((reservation: IReservation) => reservation.idx).includes(product.idx)) {
@@ -82,7 +75,7 @@ function Product({
 							color="white"
 							boxShadow="2xl"
 							onClick={() =>
-								onReservation({
+								handleReservation({
 									idx,
 									name,
 									mainImage,

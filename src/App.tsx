@@ -1,11 +1,20 @@
 import React from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Box } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+
 
 function App() {
 	return (
 		<ChakraProvider>
-			<Outlet />
+			<Box>
+				<Header />
+				<Box paddingTop="28" display="flex" flexDirection="column" paddingBottom="30" minHeight="100vh">
+					<Outlet />
+				</Box>
+				<Footer />
+			</Box>
 		</ChakraProvider>
 	);
 }

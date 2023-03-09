@@ -3,11 +3,9 @@ import { AxiosError, AxiosResponse } from 'axios';
 import instance from '../apis/instance';
 
 function useGetProducts() {
-	const { data, isLoading } = useQuery<AxiosResponse, AxiosError>('goods', () => instance.get(''), {
+	return useQuery<AxiosResponse, AxiosError>('products', () => instance.get(''), {
 		refetchOnWindowFocus: false,
 	});
-
-	return { data, isLoading };
 }
 
 export default useGetProducts;

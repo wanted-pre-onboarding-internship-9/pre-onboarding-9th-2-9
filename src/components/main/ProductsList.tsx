@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
 	Box,
 	Flex,
@@ -9,8 +9,8 @@ import {
 	RangeSliderTrack,
 	Select,
 } from '@chakra-ui/react';
-import { convertUnitToWon } from '../commons/utils';
-import useGetProducts from '../hooks/useGetProducts';
+import { convertUnitToWon } from '../../commons/utils';
+import useGetProducts from '../../hooks/useGetProducts';
 import Product from './Product';
 
 function ProductsList() {
