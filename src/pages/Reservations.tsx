@@ -7,7 +7,7 @@ function Reservations() {
 	return (
 		<Layout>
 			<Flex direction="column">
-				<Heading fontWeight="bold" fontSize="2xl" borderBottom="4px" paddingBottom="2">
+				<Heading fontWeight="bold" fontSize="2xl" borderBottom="4px" paddingBottom="2" width="80%" margin="auto">
 					예약내역
 				</Heading>
 				<ReservationsList />

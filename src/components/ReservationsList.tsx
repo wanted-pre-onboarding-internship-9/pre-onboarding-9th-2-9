@@ -12,7 +12,31 @@ function ReservationsList() {
 	}, []);
 
 	return (
-		<>
+		<Box width="80%" margin="auto">
+			<Flex
+				alignItems="center"
+				gap={['5', '10', '15', '20']}
+				letterSpacing="tighter"
+				minWidth="2xl"
+				paddingY="2"
+				fontSize={['xs', 'sm', 'md', 'lg']}
+				whiteSpace="nowrap"
+				fontWeight="bold"
+			>
+				<Flex flex="1 1 0" justifyContent="center" alignItems="center" gap="3">
+					<Box>수량</Box>
+				</Flex>
+				<Flex direction="column" flex="10 1 0" gap="1">
+					<Box textAlign="center">상품 정보</Box>
+				</Flex>
+				<Box flex="1 1 0" textAlign="center">
+					상품 가격
+				</Box>
+				<Box flex="1 1 0" textAlign="center">
+					총 가격
+				</Box>
+				<Box flex="1 1 0" textAlign="right" />
+			</Flex>
 			<Flex direction="column" paddingY="5" gap="5" minWidth="3xl">
 				{reservations.map((reservation) => (
 					<Reservation
@@ -38,10 +62,14 @@ function ReservationsList() {
 				justifyContent="center"
 				alignItems="flex-end"
 			>
-				<Box>총 주문금액</Box>
-				<Box>{convertUnitToWon(reservations.reduce((prev, cur) => prev + cur.price * cur.count, 0))}</Box>
+				<Box fontSize="lg" fontWeight="bold" color="white">
+					총 주문금액
+				</Box>
+				<Box fontSize="2xl" fontWeight="bold" color="white">
+					{convertUnitToWon(reservations.reduce((prev, cur) => prev + cur.price * cur.count, 0))}
+				</Box>
 			</Flex>
-		</>
+		</Box>
 	);
 }
 

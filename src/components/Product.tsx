@@ -7,7 +7,6 @@ import {
 	ModalCloseButton,
 	ModalContent,
 	ModalFooter,
-	ModalHeader,
 	ModalOverlay,
 	Modal,
 	useDisclosure,
@@ -47,6 +46,8 @@ function Product({
 			reservations = [...reservations, { ...product, count: 1 }];
 		}
 		localStorage.setItem('reservations', JSON.stringify(reservations));
+
+		window.alert('예약되었습니다.');
 	};
 
 	return (
@@ -79,6 +80,7 @@ function Product({
 							bgColor="blue.400"
 							_hover={{ bg: 'blue.300' }}
 							color="white"
+							boxShadow="2xl"
 							onClick={() =>
 								onReservation({
 									idx,
@@ -104,11 +106,10 @@ function Product({
 				<Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
 					<ModalOverlay />
 					<ModalContent>
-						<ModalHeader>{name}</ModalHeader>
 						<ModalCloseButton />
-						<ModalBody>
+						<ModalBody paddingTop="10">
 							<Flex direction="column">
-								<Box overflow="hidden" margin="auto">
+								<Box overflow="hidden" margin="auto" borderRadius="xl">
 									<StyledImage
 										src={mainImage}
 										alt={name}
@@ -117,6 +118,7 @@ function Product({
 										objectFit="cover"
 										w="300px"
 										h="300px"
+										borderRadius="xl"
 									/>
 								</Box>
 								<Box padding="5">
@@ -128,21 +130,24 @@ function Product({
 									<Box fontWeight="bold" fontSize="2xl" letterSpacing="tight" marginY="2">
 										{convertUnitToWon(price)}
 									</Box>
-									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
-										{description}
-									</Box>
-									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
-										{`구매가능 갯수 ${maximumPurchases}`}
-									</Box>
+									<Flex fontSize="lg" color="gray.600" letterSpacing="tighter" gap="1" marginY="2">
+										<Box display="inline-block" fontWeight="bold">
+											구매가능 갯수
+										</Box>
+										<Box display="inline-block">{maximumPurchases}개</Box>
+									</Flex>
 									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
 										{`등록기간 ${registrationDate}`}
+									</Box>
+									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
+										{description}
 									</Box>
 								</Box>
 							</Flex>
 						</ModalBody>
 						<ModalFooter>
 							<Button colorScheme="blue" mr={3} onClick={onClose}>
-								Close
+								닫기
 							</Button>
 						</ModalFooter>
 					</ModalContent>

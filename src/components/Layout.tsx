@@ -7,14 +7,7 @@ function Layout({ children }: { children: JSX.Element | JSX.Element[] }) {
 	return (
 		<Box>
 			<Header />
-			<Box
-				paddingTop="28"
-				display="flex"
-				flexDirection="column"
-				alignItems="center"
-				justifyContent="center"
-				paddingBottom="30"
-			>
+			<Box paddingTop="28" display="flex" flexDirection="column" paddingBottom="30" minHeight="100vh">
 				{children}
 			</Box>
 			<Footer />
