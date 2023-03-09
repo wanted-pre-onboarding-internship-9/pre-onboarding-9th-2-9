@@ -11,7 +11,8 @@
         "airbnb",
         "airbnb-typescript",
         "airbnb/hooks",
-        "prettier"
+        "prettier",
+        "plugin:react/jsx-runtime"
     ],
     "overrides": [
     ],
