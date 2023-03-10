@@ -9,6 +9,10 @@ interface IProduct {
 	registrationDate: string;
 }
 
+interface IProductModal extends IProduct {
+	isOpen: boolean;
+	onClose: () => void;
+}
 interface IProductsFilterProps {
 	priceRange: number[];
 	setSelectedPriceRange: Dispatch<SetState<number[]>>;
