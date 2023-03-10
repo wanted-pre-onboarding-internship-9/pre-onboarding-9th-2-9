@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseURL = '/mock/mock_data.json';
+
 const instance = axios.create({
-	baseURL: process.env.REACT_APP_BASE_URL,
+	baseURL,
 	headers: {
 		'Content-Type': 'application/json',
 	},
