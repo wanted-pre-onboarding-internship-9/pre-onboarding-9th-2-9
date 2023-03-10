@@ -54,8 +54,8 @@ function Product(props: IProduct) {
 					</Box>
 					<Flex paddingX="3" justifyContent="space-between" marginTop="auto">
 						<Button
-							bgColor="blue.400"
-							_hover={{ bg: 'blue.300' }}
+							bgColor="green.400"
+							_hover={{ bg: 'green.300' }}
 							color="white"
 							boxShadow="2xl"
 							onClick={() => handleReservation(props)}
@@ -68,18 +68,20 @@ function Product(props: IProduct) {
 					</Flex>
 				</Flex>
 			</GridItem>
-			<ProductModal
-				idx={idx}
-				name={name}
-				mainImage={mainImage}
-				price={price}
-				spaceCategory={spaceCategory}
-				description={description}
-				maximumPurchases={maximumPurchases}
-				registrationDate={registrationDate}
-				isOpen={isOpen}
-				onClose={onClose}
-			/>
+			{isOpen && (
+				<ProductModal
+					idx={idx}
+					name={name}
+					mainImage={mainImage}
+					price={price}
+					spaceCategory={spaceCategory}
+					description={description}
+					maximumPurchases={maximumPurchases}
+					registrationDate={registrationDate}
+					isOpen={isOpen}
+					onClose={onClose}
+				/>
+			)}
 		</>
 	);
 }

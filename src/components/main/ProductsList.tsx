@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react';
+import { Flex, Grid, Heading } from '@chakra-ui/react';
 import Product from './Product';
 
 function ProductsList({ products }: { products: IProduct[] }) {
@@ -32,7 +32,11 @@ function ProductsList({ products }: { products: IProduct[] }) {
 					))}
 				</Grid>
 			) : (
-				<>상품이 없습니다.</>
+				<Flex justifyContent="center" alignItems="center" minHeight="300px">
+					<Heading letterSpacing="tighter" color="gray.700">
+						조건에 맞는 상품이 없습니다. ㅠ_ㅠ
+					</Heading>
+				</Flex>
 			)}
 		</div>
 	);

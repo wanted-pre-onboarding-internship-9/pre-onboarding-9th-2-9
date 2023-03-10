@@ -35,6 +35,15 @@ interface IReservationProps extends IReservation {
 	setReservations: Dispatch<SetState<boolean>>;
 }
 
-interface ContextProps {
-	children: JSX.Element | JSX.Element[];
+interface ICheckBoxesProps {
+	name: string;
+	items: string[];
+	setSelectedItem: Dispatch<SetStateAction<string[]>>;
+}
+
+interface ISliderProps {
+	name: string;
+	selectedRange: number[];
+	range: number[];
+	setSelectedRange: Dispatch<SetStateAction<number[]>>;
 }
