@@ -9,6 +9,15 @@ interface IProduct {
 	registrationDate: string;
 }
 
+interface IProductProps {
+	minValue: number;
+	maxValue: number;
+	priceRange: number[];
+	setPriceRange: Dispatch<SetState<number[]>>;
+	selectedRegion: string;
+	setSelectedRegion: Dispatch<SetState<string>>;
+	dedupRegions: string[];
+}
 interface IReservation extends IProduct {
 	count: number;
 }
