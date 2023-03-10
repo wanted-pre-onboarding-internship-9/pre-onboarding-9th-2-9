@@ -1,14 +1,11 @@
 import React from 'react';
 import { Box, Button, useDisclosure, Flex, GridItem, useToast } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import { convertUnitToWon } from '../../commons/utils';
 import SkeletonImage from '../common/SkeletonImage';
 import ProductModal from './ProductModal';
 
 function Product(props: IProduct) {
 	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
-
-	const navigate = useNavigate();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
