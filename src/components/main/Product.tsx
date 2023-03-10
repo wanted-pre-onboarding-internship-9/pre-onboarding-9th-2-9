@@ -23,8 +23,7 @@ const StyledImage = styled(Image)`
 	}
 `;
 
-function Product(props: IProductProps) {
-	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate, isView } = props;
+	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -46,7 +45,7 @@ function Product(props: IProductProps) {
 	return (
 		<>
 			<GridItem
-				hidden={!isView}
+				// hidden={!isView}
 				boxShadow="2xl"
 				borderRadius="lg"
 				overflow="hidden"
