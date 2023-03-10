@@ -8,10 +8,9 @@ import {
 	RangeSliderTrack,
 } from '@chakra-ui/react';
 import { convertUnitToWon } from '../../commons/utils';
-import { regions } from '../../constant/constant';
 
 function ProductsFilter(props: IProductsFilterProps) {
-	const { priceRange, setPriceRange, setSelectedRegion } = props;
+	const { priceRange, setPriceRange, setSelectedRegion, regions } = props;
 
 	const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (!event.target.checked) {
@@ -79,7 +78,7 @@ function ProductsFilter(props: IProductsFilterProps) {
 						지역별
 					</Box>
 
-					{regions.map((region) => (
+					{regions?.map((region) => (
 						<Checkbox key={region} value={region} onChange={(e) => handleCheck(e)}>
 							{region}
 						</Checkbox>

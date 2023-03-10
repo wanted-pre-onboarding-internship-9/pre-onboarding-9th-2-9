@@ -7,11 +7,16 @@ import ProductsFilter from './ProductsFilter';
 function ProductsList() {
 	const [priceRange, setPriceRange] = useState<number[]>([0, 30000]);
 	const [selectedRegion, setSelectedRegion] = useState<string[]>([]);
-	const { products } = useGetProducts(selectedRegion, priceRange);
+	const { products, regions } = useGetProducts(selectedRegion, priceRange);
 
 	return (
 		<Box width="80%" marginX="auto">
-			<ProductsFilter priceRange={priceRange} setPriceRange={setPriceRange} setSelectedRegion={setSelectedRegion} />
+			<ProductsFilter
+				priceRange={priceRange}
+				setPriceRange={setPriceRange}
+				setSelectedRegion={setSelectedRegion}
+				regions={regions}
+			/>
 			<Grid
 				gap={30}
 				templateColumns={[

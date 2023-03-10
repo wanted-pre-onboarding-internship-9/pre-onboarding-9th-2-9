@@ -13,6 +13,12 @@ interface IProductsFilterProps {
 	priceRange: number[];
 	setPriceRange: Dispatch<SetState<number[]>>;
 	setSelectedRegion: Dispatch<SetState<string[]>>;
+	regions?: string[];
+}
+
+interface IGetProducts {
+	products: IProduct[];
+	regions: string[];
 }
 
 interface IReservation extends IProduct {
