@@ -1,23 +1,29 @@
 import React from 'react';
-import { Box, Button, useDisclosure, Flex, GridItem } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, useDisclosure, Flex, GridItem, useToast } from '@chakra-ui/react';
 import { convertUnitToWon } from '../../commons/utils';
 import SkeletonImage from '../common/SkeletonImage';
+import Toast from '../common/Toast';
 import ProductModal from './ProductModal';
 
 function Product(props: IProduct) {
 	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
 
-	const navigate = useNavigate();
-
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const toast = useToast();
 
 	const handleReservation = (product: IProduct) => {
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
 
 		const index = reservations.findIndex((reservation: IReservation) => reservation.idx === product.idx);
 		if (index !== -1 && reservations[index].count >= product.maximumPurchases) {
-			window.alert('구매 가능 횟수가 초과하였습니다.');
+			toast({
+				title: `${product.name} 구매 가능 횟수가 초과하였습니다.`,
+				status: 'error',
+				duration: 1000,
+				isClosable: true,
+				position: 'top-right',
+			});
 			return;
 		}
 
@@ -30,9 +36,15 @@ function Product(props: IProduct) {
 		}
 		localStorage.setItem('reservations', JSON.stringify(reservations));
 
-		if (window.confirm('예약이 확정되었습니다. 장바구니로 이동하시겠습니까?')) {
-			navigate('/reservations');
-		}
+		toast({
+			title: `${product.name} 예약이 확정되었습니다.`,
+			duration: 4000,
+			isClosable: true,
+			position: 'top-right',
+			render() {
+				return <Toast text={`${product.name} 예약이 확정되었습니다. 장바구니로 이동하시겠습니까?`} isConfirm />;
+			},
+		});
 	};
 
 	return (

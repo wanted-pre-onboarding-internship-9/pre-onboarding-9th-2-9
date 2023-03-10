@@ -27,7 +27,7 @@ function ProductModal(props: IProductModal) {
 	} = props;
 
 	return (
-		<Box>
+		<Box display="none">
 			{isOpen ? (
 				<Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
 					<ModalOverlay />
