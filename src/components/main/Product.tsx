@@ -3,7 +3,6 @@ import { Box, Button, useDisclosure, Flex, GridItem, useToast } from '@chakra-ui
 import { useNavigate } from 'react-router-dom';
 import { convertUnitToWon } from '../../commons/utils';
 import SkeletonImage from '../common/SkeletonImage';
-import Toast from '../common/Toast';
 import ProductModal from './ProductModal';
 
 function Product(props: IProduct) {
@@ -40,18 +39,11 @@ function Product(props: IProduct) {
 		localStorage.setItem('reservations', JSON.stringify(reservations));
 
 		toast({
-			duration: 2000,
+			title: `${product.name} 예약이 확정되었습니다.`,
+			status: 'success',
+			duration: 1000,
 			isClosable: true,
 			position: 'top-right',
-			render() {
-				return (
-					<Toast
-						text={`${product.name} 예약이 확정되었습니다. 장바구니로 이동하시겠습니까?`}
-						onClick={() => navigate('/reservations')}
-						isConfirm
-					/>
-				);
-			},
 		});
 	};
 
