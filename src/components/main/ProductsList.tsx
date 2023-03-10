@@ -17,7 +17,7 @@ function ProductsList() {
 		<Box width="80%" marginX="auto">
 			<ProductsFilter
 				selectedPriceRange={selectedPriceRange}
-				priceRange={priceRange || [0, 30000]}
+				priceRange={priceRange || [0, 0]}
 				setSelectedPriceRange={setSelectedPriceRange}
 				setSelectedRegion={setSelectedRegion}
 				regions={regions}
