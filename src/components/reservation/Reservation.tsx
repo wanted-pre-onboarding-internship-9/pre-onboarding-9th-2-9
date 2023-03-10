@@ -1,5 +1,5 @@
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, IconButton, Image } from '@chakra-ui/react';
+import { Box, Button, Flex, IconButton, Image, useToast } from '@chakra-ui/react';
 import { convertUnitToWon } from '../../commons/utils';
 
 function Reservation({
@@ -13,6 +13,8 @@ function Reservation({
 	maximumPurchases,
 	setReservations,
 }: IReservationProps) {
+	const toast = useToast();
+
 	const handleDelete = (productIdx: number) => {
 		if (!window.confirm('삭제 하시겠습니까?')) return;
 
@@ -24,7 +26,13 @@ function Reservation({
 
 	const handlePlus = (productIdx: number) => {
 		if (maximumPurchases === count) {
-			window.alert('구매 가능 개수를 초과하였습니다.');
+			toast({
+				title: `구매 가능 횟수가 초과하였습니다.`,
+				status: 'error',
+				duration: 1000,
+				isClosable: true,
+				position: 'top-right',
+			});
 			return;
 		}
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);

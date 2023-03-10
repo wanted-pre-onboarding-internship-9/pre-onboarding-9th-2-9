@@ -35,6 +35,11 @@ interface IReservationProps extends IReservation {
 	setReservations: Dispatch<SetState<boolean>>;
 }
 
+interface IProductModal extends IProduct {
+	isOpen: boolean;
+	onClose: () => void;
+}
+
 interface ICheckBoxesProps {
 	name: string;
 	items: string[];
