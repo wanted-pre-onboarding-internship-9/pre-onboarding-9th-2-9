@@ -10,7 +10,7 @@ import {
 import { convertUnitToWon } from '../../commons/utils';
 
 function ProductsFilter(props: IProductsFilterProps) {
-	const { priceRange, setPriceRange, setSelectedRegion, regions } = props;
+	const { priceRange, selectedPriceRange, setSelectedPriceRange, setSelectedRegion, regions } = props;
 
 	const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (!event.target.checked) {
@@ -32,11 +32,11 @@ function ProductsFilter(props: IProductsFilterProps) {
 						aria-label={['min', 'max']}
 						colorScheme="blue"
 						defaultValue={[0, 30000]}
-						min={0}
-						max={30000}
+						min={priceRange[0]}
+						max={priceRange[1]}
 						step={1000}
-						value={priceRange}
-						onChange={(range) => setPriceRange(() => range)}
+						value={selectedPriceRange}
+						onChange={(range) => setSelectedPriceRange(() => range)}
 					>
 						<RangeSliderTrack height={2}>
 							<RangeSliderFilledTrack />
@@ -52,7 +52,7 @@ function ProductsFilter(props: IProductsFilterProps) {
 								boxShadow="lg"
 							>
 								<Box fontSize="sm" letterSpacing="tighter" whiteSpace="nowrap" fontWeight="bold" color="white">
-									{convertUnitToWon(priceRange[0])}
+									{convertUnitToWon(selectedPriceRange[0])}
 								</Box>
 							</Box>
 						</RangeSliderThumb>
@@ -67,7 +67,7 @@ function ProductsFilter(props: IProductsFilterProps) {
 								boxShadow="lg"
 							>
 								<Box fontSize="sm" letterSpacing="tighter" whiteSpace="nowrap" fontWeight="bold" color="white">
-									{convertUnitToWon(priceRange[1])}
+									{convertUnitToWon(selectedPriceRange[1])}
 								</Box>
 							</Box>
 						</RangeSliderThumb>

@@ -1,19 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Grid } from '@chakra-ui/react';
 import useGetProducts from '../../hooks/useGetProducts';
 import Product from './Product';
 import ProductsFilter from './ProductsFilter';
 
 function ProductsList() {
-	const [priceRange, setPriceRange] = useState<number[]>([0, 30000]);
+	const [selectedPriceRange, setSelectedPriceRange] = useState<number[]>([0, 0]);
 	const [selectedRegion, setSelectedRegion] = useState<string[]>([]);
-	const { products, regions } = useGetProducts(selectedRegion, priceRange);
+	const { products, regions, priceRange } = useGetProducts(selectedRegion, selectedPriceRange);
+
+	useEffect(() => {
+		if (priceRange) setSelectedPriceRange(priceRange);
+	}, [priceRange]);
 
 	return (
 		<Box width="80%" marginX="auto">
 			<ProductsFilter
-				priceRange={priceRange}
-				setPriceRange={setPriceRange}
+				selectedPriceRange={selectedPriceRange}
+				priceRange={priceRange || [0, 30000]}
+				setSelectedPriceRange={setSelectedPriceRange}
 				setSelectedRegion={setSelectedRegion}
 				regions={regions}
 			/>

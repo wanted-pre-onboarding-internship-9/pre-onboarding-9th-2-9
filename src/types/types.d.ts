@@ -11,7 +11,8 @@ interface IProduct {
 
 interface IProductsFilterProps {
 	priceRange: number[];
-	setPriceRange: Dispatch<SetState<number[]>>;
+	setSelectedPriceRange: Dispatch<SetState<number[]>>;
+	selectedPriceRange: number[];
 	setSelectedRegion: Dispatch<SetState<string[]>>;
 	regions?: string[];
 }
@@ -19,6 +20,7 @@ interface IProductsFilterProps {
 interface IGetProducts {
 	products: IProduct[];
 	regions: string[];
+	priceRange: number[];
 }
 
 interface IReservation extends IProduct {
