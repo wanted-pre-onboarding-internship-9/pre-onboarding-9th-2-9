@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	Box,
 	Button,
-	Image,
 	ModalBody,
 	ModalCloseButton,
 	ModalContent,
@@ -13,23 +12,25 @@ import {
 	Flex,
 	GridItem,
 } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import { convertUnitToWon } from '../../commons/utils';
+import SkeletonImage from '../common/SkeletonImage';
 
-const StyledImage = styled(Image)`
-	transition: 0.2s ease-in-out;
-	&:hover {
-		transform: scale(1.05);
-	}
-`;
+function Product(props: IProduct) {
+	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
 
-function Product(props: IProductProps) {
-	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate, isView } = props;
+	const navigate = useNavigate();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleReservation = (product: IProduct) => {
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
+
+		const index = reservations.findIndex((reservation: IReservation) => reservation.idx === product.idx);
+		if (index !== -1 && reservations[index].count >= product.maximumPurchases) {
+			window.alert('구매 가능 횟수가 초과하였습니다.');
+			return;
+		}
 
 		if (reservations.map((reservation: IReservation) => reservation.idx).includes(product.idx)) {
 			reservations = reservations.map((reservation: IReservation) =>
@@ -40,23 +41,17 @@ function Product(props: IProductProps) {
 		}
 		localStorage.setItem('reservations', JSON.stringify(reservations));
 
-		window.alert('예약되었습니다.');
+		if (window.confirm('예약이 확정되었습니다. 장바구니로 이동하시겠습니까?')) {
+			navigate('/reservations');
+		}
 	};
 
 	return (
 		<>
-			<GridItem
-				hidden={!isView}
-				boxShadow="2xl"
-				borderRadius="lg"
-				overflow="hidden"
-				gap="2"
-				paddingBottom="4"
-				width="100%"
-			>
+			<GridItem boxShadow="2xl" borderRadius="lg" overflow="hidden" gap="2" paddingBottom="4" width="100%">
 				<Flex direction="column" justifyContent="space-between" height="100%">
-					<Box overflow="hidden">
-						<StyledImage src={mainImage} alt={name} width="full" transition="ease-in-out" objectFit="cover" />
+					<Box overflow="hidden" position="relative" minHeight={['300px', '200px', '250px', '350px']}>
+						<SkeletonImage src={mainImage} alt={name} />
 					</Box>
 					<Box padding="5">
 						<Box fontWeight="bold">{spaceCategory}</Box>
@@ -74,18 +69,7 @@ function Product(props: IProductProps) {
 							_hover={{ bg: 'blue.300' }}
 							color="white"
 							boxShadow="2xl"
-							onClick={() =>
-								handleReservation({
-									idx,
-									name,
-									mainImage,
-									price,
-									spaceCategory,
-									description,
-									maximumPurchases,
-									registrationDate,
-								})
-							}
+							onClick={() => handleReservation(props)}
 						>
 							예약하기
 						</Button>
@@ -103,16 +87,7 @@ function Product(props: IProductProps) {
 						<ModalBody paddingTop="10">
 							<Flex direction="column">
 								<Box overflow="hidden" margin="auto" borderRadius="xl">
-									<StyledImage
-										src={mainImage}
-										alt={name}
-										width="full"
-										transition="ease-in-out"
-										objectFit="cover"
-										w="300px"
-										h="300px"
-										borderRadius="xl"
-									/>
+									<SkeletonImage src={mainImage} alt={name} borderRadius="xl" />
 								</Box>
 								<Box padding="5">
 									<Box fontWeight="bold">{spaceCategory}</Box>
