@@ -2,7 +2,7 @@
 # 2주차 기업과제
 >  원티드에서 진행하는 2주차 [라이크어로컬](https://likealocal.co.kr) 기업과제 입니다.
 
-## [🔗 배포 URL]()
+## [🔗 배포 URL](https://pre-onboarding-9th-2-9.vercel.app)
 
 
 ## 🥸 팀원 소개 
