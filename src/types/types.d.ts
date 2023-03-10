@@ -9,8 +9,10 @@ interface IProduct {
 	registrationDate: string;
 }
 
-interface IProductProps extends IProduct {
-	isView: boolean;
+interface IProductsFilterProps {
+	priceRange: number[];
+	setPriceRange: Dispatch<SetState<number[]>>;
+	setSelectedRegion: Dispatch<SetState<string[]>>;
 }
 
 interface IReservation extends IProduct {
