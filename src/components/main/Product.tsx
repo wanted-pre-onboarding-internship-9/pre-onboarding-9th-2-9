@@ -23,20 +23,20 @@ const StyledImage = styled(Image)`
 	}
 `;
 
-function Product(props: IProductProps) {
-	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate, isView } = props;
+function Product(props: IProduct) {
+	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const handleReservation = (product: IProduct) => {
+	const handleReservation = () => {
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
 
-		if (reservations.map((reservation: IReservation) => reservation.idx).includes(product.idx)) {
+		if (reservations.map((reservation: IReservation) => reservation.idx).includes(idx)) {
 			reservations = reservations.map((reservation: IReservation) =>
-				reservation.idx === product.idx ? { ...reservation, count: reservation.count + 1 } : reservation
+				reservation.idx === idx ? { ...reservation, count: reservation.count + 1 } : reservation
 			);
 		} else {
-			reservations = [...reservations, { ...product, count: 1 }];
+			reservations = [...reservations, { ...props, count: 1 }];
 		}
 		localStorage.setItem('reservations', JSON.stringify(reservations));
 
@@ -45,15 +45,7 @@ function Product(props: IProductProps) {
 
 	return (
 		<>
-			<GridItem
-				hidden={!isView}
-				boxShadow="2xl"
-				borderRadius="lg"
-				overflow="hidden"
-				gap="2"
-				paddingBottom="4"
-				width="100%"
-			>
+			<GridItem boxShadow="2xl" borderRadius="lg" overflow="hidden" gap="2" paddingBottom="4" width="100%">
 				<Flex direction="column" justifyContent="space-between" height="100%">
 					<Box overflow="hidden">
 						<StyledImage src={mainImage} alt={name} width="full" transition="ease-in-out" objectFit="cover" />
@@ -74,18 +66,7 @@ function Product(props: IProductProps) {
 							_hover={{ bg: 'blue.300' }}
 							color="white"
 							boxShadow="2xl"
-							onClick={() =>
-								handleReservation({
-									idx,
-									name,
-									mainImage,
-									price,
-									spaceCategory,
-									description,
-									maximumPurchases,
-									registrationDate,
-								})
-							}
+							onClick={handleReservation}
 						>
 							예약하기
 						</Button>

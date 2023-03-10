@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient } from 'react-query';
 import { QueryClientProvider } from 'react-query/react';
