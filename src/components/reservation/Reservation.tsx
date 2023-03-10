@@ -14,6 +14,8 @@ function Reservation({
 	setReservations,
 }: IReservationProps) {
 	const handleDelete = (productIdx: number) => {
+		if (!window.confirm('삭제 하시겠습니까?')) return;
+
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
 		reservations = reservations.filter((reservation: IReservation) => reservation.idx !== productIdx);
 		localStorage.setItem('reservations', JSON.stringify(reservations));

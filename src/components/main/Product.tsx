@@ -1,20 +1,10 @@
 import React from 'react';
-import {
-	Box,
-	Button,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalOverlay,
-	Modal,
-	useDisclosure,
-	Flex,
-	GridItem,
-} from '@chakra-ui/react';
+import { Box, Button, useDisclosure, Flex, GridItem, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { convertUnitToWon } from '../../commons/utils';
 import SkeletonImage from '../common/SkeletonImage';
+import Toast from '../common/Toast';
+import ProductModal from './ProductModal';
 
 function Product(props: IProduct) {
 	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
@@ -23,12 +13,20 @@ function Product(props: IProduct) {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
+	const toast = useToast();
+
 	const handleReservation = (product: IProduct) => {
 		let reservations = JSON.parse(localStorage.getItem('reservations') as string);
 
 		const index = reservations.findIndex((reservation: IReservation) => reservation.idx === product.idx);
 		if (index !== -1 && reservations[index].count >= product.maximumPurchases) {
-			window.alert('구매 가능 횟수가 초과하였습니다.');
+			toast({
+				title: `${product.name} 구매 가능 횟수가 초과하였습니다.`,
+				status: 'error',
+				duration: 1000,
+				isClosable: true,
+				position: 'top-right',
+			});
 			return;
 		}
 
@@ -41,9 +39,20 @@ function Product(props: IProduct) {
 		}
 		localStorage.setItem('reservations', JSON.stringify(reservations));
 
-		if (window.confirm('예약이 확정되었습니다. 장바구니로 이동하시겠습니까?')) {
-			navigate('/reservations');
-		}
+		toast({
+			duration: 2000,
+			isClosable: true,
+			position: 'top-right',
+			render() {
+				return (
+					<Toast
+						text={`${product.name} 예약이 확정되었습니다. 장바구니로 이동하시겠습니까?`}
+						onClick={() => navigate('/reservations')}
+						isConfirm
+					/>
+				);
+			},
+		});
 	};
 
 	return (
@@ -65,8 +74,8 @@ function Product(props: IProduct) {
 					</Box>
 					<Flex paddingX="3" justifyContent="space-between" marginTop="auto">
 						<Button
-							bgColor="blue.400"
-							_hover={{ bg: 'blue.300' }}
+							bgColor="green.400"
+							_hover={{ bg: 'green.300' }}
 							color="white"
 							boxShadow="2xl"
 							onClick={() => handleReservation(props)}
@@ -79,48 +88,20 @@ function Product(props: IProduct) {
 					</Flex>
 				</Flex>
 			</GridItem>
-			{isOpen ? (
-				<Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
-					<ModalOverlay />
-					<ModalContent>
-						<ModalCloseButton />
-						<ModalBody paddingTop="10">
-							<Flex direction="column">
-								<Box overflow="hidden" margin="auto" borderRadius="xl">
-									<SkeletonImage src={mainImage} alt={name} borderRadius="xl" />
-								</Box>
-								<Box padding="5">
-									<Box fontWeight="bold">{spaceCategory}</Box>
-									<Box fontWeight="bold" fontSize="lg" letterSpacing="tighter">
-										{name}
-									</Box>
-									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">{`상품번호 : ${idx}`}</Box>
-									<Box fontWeight="bold" fontSize="2xl" letterSpacing="tight" marginY="2">
-										{convertUnitToWon(price)}
-									</Box>
-									<Flex fontSize="lg" color="gray.600" letterSpacing="tighter" gap="1" marginY="2">
-										<Box display="inline-block" fontWeight="bold">
-											구매가능 갯수
-										</Box>
-										<Box display="inline-block">{maximumPurchases}개</Box>
-									</Flex>
-									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
-										{`등록기간 ${registrationDate}`}
-									</Box>
-									<Box fontSize="sm" color="gray.600" letterSpacing="tighter">
-										{description}
-									</Box>
-								</Box>
-							</Flex>
-						</ModalBody>
-						<ModalFooter>
-							<Button colorScheme="blue" mr={3} onClick={onClose}>
-								닫기
-							</Button>
-						</ModalFooter>
-					</ModalContent>
-				</Modal>
-			) : null}
+			{isOpen && (
+				<ProductModal
+					idx={idx}
+					name={name}
+					mainImage={mainImage}
+					price={price}
+					spaceCategory={spaceCategory}
+					description={description}
+					maximumPurchases={maximumPurchases}
+					registrationDate={registrationDate}
+					isOpen={isOpen}
+					onClose={onClose}
+				/>
+			)}
 		</>
 	);
 }

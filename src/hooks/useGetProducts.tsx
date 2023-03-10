@@ -10,7 +10,7 @@ function useGetProducts(selectedRegion: string[], priceRange: number[]) {
 		select: (response) => {
 			const filterdProducts = response.filter(
 				(product: IProduct) =>
-					(selectedRegion.includes(product.spaceCategory) || selectedRegion.length === 0) &&
+					(selectedRegion?.includes(product.spaceCategory) || selectedRegion?.length === 0) &&
 					priceRange[0] <= product.price &&
 					product.price <= priceRange[1]
 			);
