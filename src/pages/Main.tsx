@@ -11,41 +11,35 @@ function Main() {
 	}, []);
 
 	const { data, isLoading, isError } = useGetProducts();
+	
 	const [selectedRegion, setSelectedRegion] = useState<string>('전체');
+	const [priceRange, setPriceRange] = useState<number[]>([0, 0]);
 
-	const regions: string[] = data?.data.map((product: IProduct) => product.spaceCategory);
-	const dedupRegions: string[] = regions?.filter((element, index) => regions.indexOf(element) === index);
+	useEffect(() => {
+		if (!data) return;
+		setPriceRange([data.minPrice, data.maxPrice]);
+	}, [data]);
 
-	const priceArr: number[] = [];
-	const categoryArr: string[] = [];
-
-	data?.data.forEach((obj: IProduct) => {
-		priceArr.push(obj.price);
-		categoryArr.push(obj.spaceCategory);
-	});
-	const minValue = Math.min.apply(null, priceArr);
-	const maxValue = Math.max.apply(null, priceArr);
-	const [priceRange, setPriceRange] = useState<number[]>([0, 30000]);
-
-	const productList = data?.data.filter((el: IProduct) => {
+	const productList = data?.productData.filter((el: IProduct) => {
 		if (selectedRegion === '전체') return priceRange[0] <= el.price && priceRange[1] >= el.price;
 		return selectedRegion === el.spaceCategory && priceRange[0] <= el.price && priceRange[1] >= el.price;
 	});
 
 	if (isLoading || !data) return <Spinner />;
 	if (isError) return <div>Error...</div>;
+
 	return (
 		<Box width="80%" marginX="auto">
 			<ProductsFilter
-				minValue={minValue}
-				maxValue={maxValue}
+				minValue={data.minPrice}
+				maxValue={data.maxPrice}
 				priceRange={priceRange}
 				setPriceRange={setPriceRange}
 				selectedRegion={selectedRegion}
 				setSelectedRegion={setSelectedRegion}
-				dedupRegions={dedupRegions}
+				dedupRegions={data.dedupRegions}
 			/>
-			<ProductsList productList={productList} />
+			{productList && <ProductsList productList={productList} />}
 		</Box>
 	);
 }

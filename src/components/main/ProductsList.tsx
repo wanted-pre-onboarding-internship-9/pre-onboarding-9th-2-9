@@ -8,7 +8,7 @@ function ProductsList({ productList }: { productList: IProduct[] }) {
 			templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
 			paddingTop="10"
 		>
-			{productList && productList.length > 0 ? (
+			{productList.length > 0 ? (
 				<>
 					{productList.map((product: IProduct) => (
 						<Product
