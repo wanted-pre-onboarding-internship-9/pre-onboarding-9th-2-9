@@ -9,10 +9,6 @@ interface IProduct {
 	registrationDate: string;
 }
 
-interface IProductProps extends IProduct {
-	isView: boolean;
-}
-
 interface IReservation extends IProduct {
 	count: number;
 }

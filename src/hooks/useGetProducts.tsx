@@ -3,7 +3,8 @@ import { AxiosError, AxiosResponse } from 'axios';
 import instance from '../apis/instance';
 
 function useGetProducts() {
-	return useQuery<AxiosResponse, AxiosError>('products', () => instance.get(''), {
+	const patch = () => instance.get('');
+	return useQuery<AxiosResponse, AxiosError>(['products'], patch, {
 		refetchOnWindowFocus: false,
 	});
 }

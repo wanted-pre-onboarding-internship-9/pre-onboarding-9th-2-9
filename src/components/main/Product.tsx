@@ -23,6 +23,7 @@ const StyledImage = styled(Image)`
 	}
 `;
 
+function Product(props: IProduct) {
 	const { idx, name, mainImage, price, spaceCategory, description, maximumPurchases, registrationDate } = props;
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,15 +45,7 @@ const StyledImage = styled(Image)`
 
 	return (
 		<>
-			<GridItem
-				// hidden={!isView}
-				boxShadow="2xl"
-				borderRadius="lg"
-				overflow="hidden"
-				gap="2"
-				paddingBottom="4"
-				width="100%"
-			>
+			<GridItem boxShadow="2xl" borderRadius="lg" overflow="hidden" gap="2" paddingBottom="4" width="100%">
 				<Flex direction="column" justifyContent="space-between" height="100%">
 					<Box overflow="hidden">
 						<StyledImage src={mainImage} alt={name} width="full" transition="ease-in-out" objectFit="cover" />

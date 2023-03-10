@@ -7,19 +7,39 @@ import {
 	RangeSliderFilledTrack,
 	RangeSliderThumb,
 	RangeSliderTrack,
-	Select,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	Button,
 } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { convertUnitToWon } from '../../commons/utils';
 import useGetProducts from '../../hooks/useGetProducts';
 import Product from './Product';
 
 function ProductsList() {
 	const { data } = useGetProducts();
-	const [priceRange, setPriceRange] = useState<number[]>([0, 30000]);
-	const [selectedRegion, setSelectedRegion] = useState<string>('');
+	const [selectedRegion, setSelectedRegion] = useState<string>('전체');
 	const regions: string[] = data?.data.map((product: IProduct) => product.spaceCategory);
 	const dedupRegions: string[] = regions?.filter((element, index) => regions.indexOf(element) === index);
 
+	// 수인
+	const priceArr: number[] = [];
+	const categoryArr: string[] = [];
+
+	data?.data.forEach((obj: IProduct) => {
+		priceArr.push(obj.price);
+		categoryArr.push(obj.spaceCategory);
+	});
+	const maxValue = Math.max.apply(null, priceArr);
+	const minValue = Math.min.apply(null, priceArr);
+	const [priceRange, setPriceRange] = useState<number[]>([0, 30000]);
+
+	const productList = data?.data.filter((el: IProduct) => {
+		if (selectedRegion === '전체') return priceRange[0] <= el.price && priceRange[1] >= el.price;
+		return selectedRegion === el.spaceCategory && priceRange[0] <= el.price && priceRange[1] >= el.price;
+	});
 	return (
 		<Box width="80%" marginX="auto">
 			<Box width="full">
@@ -32,7 +52,7 @@ function ProductsList() {
 							// eslint-disable-next-line
 							aria-label={['min', 'max']}
 							colorScheme="blue"
-							defaultValue={[0, 30000]}
+							defaultValue={[minValue, maxValue]}
 							min={0}
 							max={30000}
 							step={1000}
@@ -74,22 +94,24 @@ function ProductsList() {
 							</RangeSliderThumb>
 						</RangeSlider>
 					</Flex>
+					{/* 지역별 */}
 					<Flex width="full" maxWidth="lg" gap="5" alignItems="center" whiteSpace="nowrap">
 						<Box letterSpacing="tighter" fontSize="lg" fontWeight="bold">
 							지역별
 						</Box>
-						<Select
-							placeholder="전체"
-							value={selectedRegion}
-							onChange={(event) => setSelectedRegion(event.target.value)}
-						>
-							{data &&
-								dedupRegions.map((region) => (
-									<option key={region} value={region}>
-										{region}
-									</option>
+						<Menu>
+							<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+								{selectedRegion}
+							</MenuButton>
+							<MenuList>
+								<MenuItem onClick={() => setSelectedRegion('전체')}>전체</MenuItem>
+								{dedupRegions?.map((category: string) => (
+									<MenuItem key={category.toString()} onClick={() => setSelectedRegion(category)}>
+										{category}
+									</MenuItem>
 								))}
-						</Select>
+							</MenuList>
+						</Menu>
 					</Flex>
 				</Flex>
 			</Box>
@@ -98,7 +120,7 @@ function ProductsList() {
 				templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
 				paddingTop="10"
 			>
-				{data?.data.map((product: IProduct) => (
+				{productList?.map((product: IProduct) => (
 					<Product
 						key={product.idx}
 						idx={product.idx}
@@ -109,11 +131,6 @@ function ProductsList() {
 						description={product.description}
 						maximumPurchases={product.maximumPurchases}
 						registrationDate={product.registrationDate}
-						isView={
-							(product.spaceCategory === selectedRegion || selectedRegion === '') &&
-							priceRange[0] <= product.price &&
-							product.price <= priceRange[1]
-						}
 					/>
 				))}
 			</Grid>
