@@ -28,8 +28,6 @@ function ProductsFilter(props: IProductsFilterProps) {
 						가격대별
 					</Box>
 					<RangeSlider
-						// eslint-disable-next-line
-						aria-label={['min', 'max']}
 						colorScheme="blue"
 						defaultValue={[0, 30000]}
 						min={priceRange[0]}
