@@ -4,50 +4,33 @@
 
 <br/>
 
+
 ## [🔗 배포 URL](https://pre-onboarding-9th-2-9.vercel.app)
 
-<br/>
-
-## 🥸 팀원 소개 
-
-<table>
-<tbody>
-<tr>
-<td  align="center">
-<a  href="https://github.com/minhyeonhong"><img  src="https://avatars.githubusercontent.com/u/90454621?v=4(https://avatars.githubusercontent.com/u/90454621?v=4)"  width="100px;"  alt=""/>
-<br  /><sub><b>민현홍</b></sub></a><br  /></td>
-
-<td  align="center"><a  href="https://github.com/Hwang-Junsu"><img  src="https://avatars.githubusercontent.com/u/80745897?v=4(https://avatars.githubusercontent.com/u/80745897?v=4)"  width="100px;"  alt=""/><br  /><sub><b>황준수</b></sub></a><br  /></td>
-
-<td  align="center"><a  href="https://github.com/eunrain"><img  src="https://avatars.githubusercontent.com/u/113877276?v=4(https://avatars.githubusercontent.com/u/113877276?v=4)"  width="100px;"  alt=""/><br  /><sub><b>고은비</b></sub></a><br  /></td>
-
-<td  align="center"><a  href="https://github.com/yeon-kk"><img  src="https://avatars.githubusercontent.com/u/86847564?v=4(https://avatars.githubusercontent.com/u/86847564?v=4)"  width="100px;"  alt=""/><br  /><sub><b>곽연경</b></sub></a><br  /></td>
-
-<td  align="center"><a  href="https://github.com/whl5105"><img  src="https://avatars.githubusercontent.com/u/73993670?v=4(https://avatars.githubusercontent.com/u/73993670?v=4)"  width="100px;"  alt=""/><br  /><sub><b>최수인</b></sub></a><br  /></td>
-
-<td  align="center"><a  href="https://github.com/minhyeonhong"><img  src="https://avatars.githubusercontent.com/u/90454621?v=4(https://avatars.githubusercontent.com/u/90454621?v=4)"  width="100px;"  alt=""/><br  /><sub><b>김민영</b></sub></a><br  /></td>
-
-</tbody>
-</table>
 
 <br/>
 
-## ⚙️ 기술 스택 
-```typeScript```
-```CRA```
-```emotion```
-```axios```
-```react-router-dom```
-```React-Query```
-```chakra-ui```
+
+## ⚙️ 프로젝트의 실행 방법
+
+> 💡주의 : 해당 프로젝트의 데이터는 mock-data 입니다. 
+
+**Install**
+```bash
+npm install
+or
+yarn install
+```
+
+**Start**
+```bash
+npm start
+or
+yarn start
+```
 
 <br/>
 
-## 📽️ 데모 영상 
-
-
-
-<br/>
 
 ## ✅  요구사항
 
@@ -74,25 +57,45 @@
 <br />
 
 
-## 📚 Best Practice
-
-###  
--
--
--
+## 📽️ 데모 영상 
 
 
-###  상품 필터링 
--
--
--
+
+![KakaoTalk_Video_2023-03-10-22-18-38](https://user-images.githubusercontent.com/73993670/224327278-03da2463-f49e-445a-92e0-a9668d7684b1.gif)
 
 
-###  장바구니 
-- 
-- 
 <br/>
 
+## 📚 기능 설명
+**공통** 
+
+- chakra-ui 를 Spinner**,T**oast 사용하여  공통 UI 통일
+
+**여행 상품 리스트 노출 및 필터링** 
+
+- react-query의 staleTime과 refetchOnWindowFocus 옵션을 사용하여 불필요한 데이터 요청을 방지
+- useQuery의 select 메서드를 이용하여, 필터링에 필요한 데이터 가공
+
+**여행상품  예약처리 및 장바구니 예약 리스트 노출** 
+
+- 메인페이지 :  예약버튼  클릭시 최대 구매수량에 따른 예약 처리 .
+- 장바구니 : localStorag를 사용하여 사용자가 사이트 재 접속시 예약내역 유지
+- 장바구니 : 예약 내역 삭제 및 최소 수량 이하로 선택 시 confirm 재확인을 통해 UX 편의성 고려
+
+<br/>
+
+
+## ⚙️ 기술 스택 
+```typeScript```
+```CRA```
+```emotion```
+```axios```
+```react-router-dom```
+```React-Query```
+```chakra-ui```
+
+
+<br/>
 
 
 ## 🗂️ 폴더구조
@@ -153,17 +156,16 @@
 - `Chore`: 빌드 업무 수정, 패키지 매니저 수정(.gitignore 수정 등)
 - `Init`: 초기셋팅 (esLint 적용 등)
 
-- <br/>
+<br/>
 
 
 
 ## 📖 Git Flow
-
 -   **master(main)** : 배포하는 브랜치
 -   **develop** : 개발 브랜치 
 -   **feature** : 단위 기능을 개발하는 브랜치 
 -   **hotfix** : master 브랜치로 배포를 했는데 버그가 생겼을 떄 긴급 수정하는 브랜치 입니다.  
-- 
+
 예시)
 **feature/main-name**
 **feature/reservations**-**name**
@@ -183,22 +185,28 @@
 
 <br/>
 
-## ⚙️ 프로젝트의 실행 방법
 
-> 💡주의 : 해당 프로젝트의 데이터는 mock-data 입니다. 
 
-**Install**
-```bash
-npm install
-or
-yarn install
-```
+## 🥸 팀원 소개 
 
-**Start**
-```bash
-npm start
-or
-yarn start
-```
+<table>
+<tbody>
+<tr>
+<td  align="center">
+<a  href="https://github.com/minhyeonhong"><img  src="https://avatars.githubusercontent.com/u/90454621?v=4(https://avatars.githubusercontent.com/u/90454621?v=4)"  width="100px;"  alt=""/>
+<br  /><sub><b>민현홍</b></sub></a><br  /></td>
+
+<td  align="center"><a  href="https://github.com/Hwang-Junsu"><img  src="https://avatars.githubusercontent.com/u/80745897?v=4(https://avatars.githubusercontent.com/u/80745897?v=4)"  width="100px;"  alt=""/><br  /><sub><b>황준수</b></sub></a><br  /></td>
+
+<td  align="center"><a  href="https://github.com/eunrain"><img  src="https://avatars.githubusercontent.com/u/113877276?v=4(https://avatars.githubusercontent.com/u/113877276?v=4)"  width="100px;"  alt=""/><br  /><sub><b>고은비</b></sub></a><br  /></td>
+
+<td  align="center"><a  href="https://github.com/yeon-kk"><img  src="https://avatars.githubusercontent.com/u/86847564?v=4(https://avatars.githubusercontent.com/u/86847564?v=4)"  width="100px;"  alt=""/><br  /><sub><b>곽연경</b></sub></a><br  /></td>
+
+<td  align="center"><a  href="https://github.com/whl5105"><img  src="https://avatars.githubusercontent.com/u/73993670?v=4(https://avatars.githubusercontent.com/u/73993670?v=4)"  width="100px;"  alt=""/><br  /><sub><b>최수인</b></sub></a><br  /></td>
+
+<td  align="center"><a  href="https://github.com/minhyeonhong"><img  src="https://avatars.githubusercontent.com/u/90454621?v=4(https://avatars.githubusercontent.com/u/90454621?v=4)"  width="100px;"  alt=""/><br  /><sub><b>김민영</b></sub></a><br  /></td>
+
+</tbody>
+</table>
 
 
